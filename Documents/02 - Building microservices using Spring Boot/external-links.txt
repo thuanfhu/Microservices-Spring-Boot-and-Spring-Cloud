@@ -1,0 +1,3 @@
+
+013 DTO-pattern-blog
+https://martinfowler.com/eaaCatalog/dataTransferObject.html

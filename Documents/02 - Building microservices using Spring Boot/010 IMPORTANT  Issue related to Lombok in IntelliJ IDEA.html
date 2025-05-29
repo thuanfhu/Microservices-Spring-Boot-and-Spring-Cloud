@@ -1,0 +1,21 @@
+<h4> LOMBOK ISSUE IN INTELLIJ IDEA</h4><p>Starting with the next lecture, we'll be using <strong>Lombok annotations</strong> in our code. However, some students using the <strong>latest version of IntelliJ IDEA</strong> might encounter <strong>compilation issues</strong> related to these annotations. To ensure a smooth experience, please follow the steps below.</p><p>If youre not facing any issues, feel free to <strong>skip this instructions</strong>.</p><p><br></p><p> <strong>Step 1: Enable Annotation Processing in IntelliJ IDEA</strong></p><p>Open IntelliJ IDEA, navigate to Settings --&gt; Build, Execution, Deployment --&gt; Compiler --&gt; Annotation Processors and ensure that the checkbox <strong>"Enable annotation processing"</strong> is <strong>checked</strong></p><p><br></p><p> <strong>Step 2: Update </strong><code><strong>pom.xml</strong></code><strong> Build Configuration</strong></p><p>Open your <code>pom.xml</code> file and <strong>replace the existing build configuration</strong> with the following snippet:</p><ol><li><pre class="prettyprint linenums">    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;annotationProcessorPaths&gt;
+                        &lt;path&gt;
+                            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                            &lt;version&gt;${lombok.version}&lt;/version&gt;
+                        &lt;/path&gt;
+                    &lt;/annotationProcessorPaths&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;</pre></li></ol><p>If you encounter any further issues, feel free to <strong>ask for help</strong>. Happy coding! </p><p><strong>Madan</strong></p>
