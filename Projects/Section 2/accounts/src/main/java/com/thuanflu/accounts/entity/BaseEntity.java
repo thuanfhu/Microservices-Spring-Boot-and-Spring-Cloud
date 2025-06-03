@@ -2,6 +2,7 @@ package com.thuanflu.accounts.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,7 @@ public class BaseEntity {
 
     @Column(insertable = false)
     String updatedBy;
+
+    @Version
+    Long version = 0L;
 }
