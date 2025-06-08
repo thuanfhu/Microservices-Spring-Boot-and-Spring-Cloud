@@ -31,17 +31,42 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public CustomerDTO fetchAccountDetail(String mobileNumber){
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+                () -> new ResourceNotFoundException("Customer", "MobileNumber", mobileNumber)
         );
 
         Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
-                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+                () -> new ResourceNotFoundException("Account", "CustomerID", customer.getCustomerId().toString())
         );
 
         CustomerDTO customerDTO = CustomerMapper.mapToCustomerDTO(customer, new CustomerDTO());
         customerDTO.setAccountDTO(AccountMapper.mapToAccountDTO(account, new AccountDTO()));
 
         return customerDTO;
+    }
+
+    @Override
+    public boolean updateAccount(CustomerDTO customerDto) {
+        boolean isUpdated = false;
+
+        AccountDTO accountDTO = customerDto.getAccountDTO();
+        if(accountDTO != null ){
+            Account account = accountRepository.findById(accountDTO.getAccountNumber()).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountDTO.getAccountNumber().toString())
+            );
+            AccountMapper.mapToAccount(accountDTO, account);
+            account = accountRepository.save(account);
+
+            Long customerId = account.getCustomerId();
+            Customer customer = customerRepository.findById(customerId).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "CustomerID", customerId.toString())
+            );
+            CustomerMapper.mapToCustomer(customerDto,customer);
+            customerRepository.save(customer);
+
+            isUpdated = true;
+        }
+
+        return  isUpdated;
     }
 
     @Override
