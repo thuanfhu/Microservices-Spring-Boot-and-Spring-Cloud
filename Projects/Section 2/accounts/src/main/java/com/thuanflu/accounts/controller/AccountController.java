@@ -47,4 +47,18 @@ public class AccountController {
                     .body(new ResponseDTO(AccountConstant.STATUS_417, AccountConstant.MESSAGE_417_UPDATE));
         }
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO> deleteAccountDetails(@RequestParam String mobileNumber) {
+        boolean isDeleted = accountService.deleteAccount(mobileNumber);
+        if(isDeleted) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDTO(AccountConstant.STATUS_200, AccountConstant.MESSAGE_200));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDTO(AccountConstant.STATUS_417, AccountConstant.MESSAGE_417_DELETE));
+        }
+    }
 }
