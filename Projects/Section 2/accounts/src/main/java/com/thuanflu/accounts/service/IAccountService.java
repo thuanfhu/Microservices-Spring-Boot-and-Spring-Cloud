@@ -4,4 +4,6 @@ import com.thuanflu.accounts.dto.CustomerDTO;
 
 public interface IAccountService {
     void createAccount(CustomerDTO customerDTO);
+
+    CustomerDTO fetchAccountDetail(String mobileNumber);
 }

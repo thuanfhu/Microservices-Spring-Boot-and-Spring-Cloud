@@ -11,6 +11,20 @@ import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleCustomerAlreadyExistsException(
+            ResourceNotFoundException exception,
+            WebRequest webRequest
+    ){
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(CustomerAlreadyExistedException.class)
     public ResponseEntity<ErrorResponseDTO> handleCustomerAlreadyExistsException(
             CustomerAlreadyExistedException exception,

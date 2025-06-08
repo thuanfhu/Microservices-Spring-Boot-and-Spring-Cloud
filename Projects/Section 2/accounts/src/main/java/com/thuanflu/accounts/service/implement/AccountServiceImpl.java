@@ -1,10 +1,13 @@
 package com.thuanflu.accounts.service.implement;
 
 import com.thuanflu.accounts.constant.AccountConstant;
+import com.thuanflu.accounts.dto.AccountDTO;
 import com.thuanflu.accounts.dto.CustomerDTO;
 import com.thuanflu.accounts.entity.Account;
 import com.thuanflu.accounts.entity.Customer;
 import com.thuanflu.accounts.exception.CustomerAlreadyExistedException;
+import com.thuanflu.accounts.exception.ResourceNotFoundException;
+import com.thuanflu.accounts.mapper.AccountMapper;
 import com.thuanflu.accounts.mapper.CustomerMapper;
 import com.thuanflu.accounts.repository.AccountRepository;
 import com.thuanflu.accounts.repository.CustomerRepository;
@@ -24,6 +27,22 @@ import java.util.Random;
 public class AccountServiceImpl implements IAccountService {
     AccountRepository accountRepository;
     CustomerRepository customerRepository;
+
+    @Override
+    public CustomerDTO fetchAccountDetail(String mobileNumber){
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+
+        Account account = accountRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+        );
+
+        CustomerDTO customerDTO = CustomerMapper.mapToCustomerDTO(customer, new CustomerDTO());
+        customerDTO.setAccountDTO(AccountMapper.mapToAccountDTO(account, new AccountDTO()));
+
+        return customerDTO;
+    }
 
     @Override
     public void createAccount(CustomerDTO customerDTO){

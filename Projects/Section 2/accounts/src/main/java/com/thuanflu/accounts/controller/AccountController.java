@@ -10,10 +10,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,15 +22,15 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity<ResponseDTO> createAccount(@RequestBody CustomerDTO customerDTO) {
         accountService.createAccount(customerDTO);
-
-        // Build response to user
-        ResponseDTO response = ResponseDTO.builder()
-                .statusCode(AccountConstant.STATUS_201)
-                .statusMsg(AccountConstant.MESSAGE_201)
-                .build();
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(new ResponseDTO(AccountConstant.STATUS_201, AccountConstant.MESSAGE_201));
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<CustomerDTO> fetchAccountDetail(@RequestParam String mobileNumber){
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(accountService.fetchAccountDetail(mobileNumber));
     }
 }
